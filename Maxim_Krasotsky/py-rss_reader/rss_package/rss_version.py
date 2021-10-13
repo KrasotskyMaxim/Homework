@@ -3,7 +3,7 @@
 import sys
 
 """stores the current version number of the program"""
-version = "1.0"
+version = "2.0"
 
 
 def print_version():

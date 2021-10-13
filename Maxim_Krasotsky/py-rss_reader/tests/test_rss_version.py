@@ -12,7 +12,7 @@ def test_version_bad(expected_result):
 
 def test_version_good():
     """checks the version value for correctness"""
-    assert version == "1.0"
+    assert version == "2.0"
 
 
 def test_print_version():

@@ -45,7 +45,7 @@ class ReadRSS:
             self.soup = BeautifulSoup(self.r.content, "xml")
         except Exception:
             """print an explanatory error message and the error itself"""
-            print("Couldn`t parse the lxml: ", self.url)
+            print("Couldn`t parse the xml: ", self.url)
             print(Exception)
 
         """find the header of the RSS feed"""
@@ -66,7 +66,6 @@ class ReadRSS:
             with open(path, "w", encoding="utf-8") as file:
                 """open the file to record the data and display the message from the successful record"""
                 json.dump(self.raw_news, file, indent=4, ensure_ascii=False)
-            print("\n\nData is written!\n\n")
         except Exception:
             """print an explanatory error message and the error itself"""
             print("Couldn`t write in file!")
@@ -179,7 +178,7 @@ class ReadRSS:
         if self.settings["json"]:
             """write the created news list to a json file"""
             self._news_in_json("all_news.json")
-            sys.exit()
+            return "\nData is written!\n"
         else:
             """create a list of readable news"""
             readable_text = [self._news_to_text(news) for news in self.raw_news]

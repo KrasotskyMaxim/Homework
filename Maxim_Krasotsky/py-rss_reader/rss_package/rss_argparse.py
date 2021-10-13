@@ -5,7 +5,7 @@ import sys
 from .rss_version import print_version, version
 
 
-def parse_args():
+def parse_args(args: list):
     """adds settings and returns these parameters"""
     parser = argparse.ArgumentParser()
     parser.add_argument("source", help="RSS URL", nargs="?")
@@ -13,7 +13,7 @@ def parse_args():
     parser.add_argument("--json", action="store_true", help="Print result as JSON in stdout")
     parser.add_argument("--verbose", action="store_true", help="Outputs verbose status messages")
     parser.add_argument("--limit", type=int, help="Limit news topics if this parameter provided")
-    return parser.parse_args()
+    return parser.parse_args(args)
 
 
 def set_args(args):
