@@ -1,16 +1,16 @@
 """contains a class for parsing RSS feeds"""
 
-import sys
+from rss_package import local_storage, log
 import requests
 from bs4 import BeautifulSoup
 import re
-import json
 
 
 class ReadRSS:
 
     """Contains methods for processing RSS feeds depending on the settings passed"""
 
+    @log.log_decorator
     def __init__(self, url, settings: dict):
         """Class object initializer
 
@@ -20,7 +20,6 @@ class ReadRSS:
 
 
         Gets the url of the RSS feed and settings for work.
-
         """
         self.url = url
         self.settings = settings
@@ -30,8 +29,9 @@ class ReadRSS:
             """get html code of RSS-feed"""
             self.r = requests.get(url)
             if self.settings["verbose"]:
-                """print the status of the request"""
+                """print the status of the request and additional information via logging"""
                 print(f"\nCode status: {self.r.status_code}\n\n")
+                log.logger.addHandler(log.log_stream)
         except Exception:
             """print an explanatory error message and the error itself"""
             print("Error fetching the URL: ", url)
@@ -54,50 +54,16 @@ class ReadRSS:
         """find news RSS-feed"""
         self.items = self.soup.findAll("item")
 
-    def _news_in_json(self, path: str):
-        """writes the received news of the RSS feed to a file
+        """number of recorded news"""
+        news_count = self.settings["limit"]
 
-        parameters:
-        path -- let the file to write the data
+        """create a list of news RSS-feed"""
+        self.raw_news = [self._create_news(item) for item in self.items[0:news_count]]
 
-        """
-        # noinspection PyBroadException
-        try:
-            with open(path, "w", encoding="utf-8") as file:
-                """open the file to record the data and display the message from the successful record"""
-                json.dump(self.raw_news, file, indent=4, ensure_ascii=False)
-        except Exception:
-            """print an explanatory error message and the error itself"""
-            print("Couldn`t write in file!")
-            print(Exception)
+        """write news to local storage"""
+        local_storage.write_in_local_storage("local_storage.scv", self.raw_news)
 
-    @staticmethod
-    def _news_to_text(news: dict):
-        """generates news in a readable form
-
-        parameters:
-        news -- dictionary with news data
-
-        returns a list of news data in a readable form
-
-        """
-        title = news["title"] if news["title"] else "No title"
-        link = news["link"]
-        description = (news["description"] if news["description"] else "No description")
-        pubdate = news["pubdate"] if news["pubdate"] else "Unknown pubdate"
-        image = news["image"] if news["image"] else "No images"
-        return "".join(
-            [
-                f"Title: {title}\n"
-                f"Description: {description}\n"
-                f"Published: {pubdate}\n"
-                f"Images: {image}\n"
-                f"Read more: {link}\n\n"
-            ]
-        )
-
-    @staticmethod
-    def _create_news(item):
+    def _create_news(self, item):
         """creates news from the received data of the RSS-feed
 
         parameters:
@@ -158,28 +124,14 @@ class ReadRSS:
                     img = item.find(img_key)["url"]
 
         return {
+            "url": self.url,
             "title": item.title,
+            "link": item.link,
             "description": item.description,
             "pubdate": item.pubDate,
-            "image": img,
-            "link": item.link
+            "image": img
         }
 
     def __str__(self):
-        """sets the number of news received depending on the --limit setting
-
-        return the result of the program in the form of readable text
-        or writes to a json file in the form of a list of dictionaries
-        """
-        news_count = self.settings["limit"]
-
-        """create a list of news RSS-feed"""
-        self.raw_news = [self._create_news(item) for item in self.items[0:news_count]]
-        if self.settings["json"]:
-            """write the created news list to a json file"""
-            self._news_in_json("all_news.json")
-            return "\nData is written!\n"
-        else:
-            """create a list of readable news"""
-            readable_text = [self._news_to_text(news) for news in self.raw_news]
-            return f"{self.channel_title}\n\n" + "\n".join(readable_text)
+        """returns RSS-feed news data"""
+        return self.raw_news

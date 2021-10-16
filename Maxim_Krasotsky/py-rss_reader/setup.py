@@ -3,7 +3,7 @@
 from setuptools import setup, find_packages
 
 """variables for setup settings"""
-VERSION = "2.0"
+VERSION = "3.0"
 DESCRIPTION = "RSS Parser"
 LONG_DESCRIPTION = "Python RSS-feeds parser using python 3.9"
 
