@@ -21,7 +21,6 @@ months = {
     }
 
 
-@log.log_decorator
 def news_by_date(settings):
     """to receive news by date
 

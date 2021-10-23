@@ -1,3 +1,4 @@
+"""checks the functions of the local_storage module"""
 from rss_package import local_storage
 
 

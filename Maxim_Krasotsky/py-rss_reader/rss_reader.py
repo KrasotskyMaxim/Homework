@@ -1,8 +1,10 @@
 """contains the main function to run the program"""
 
 from rss_package import parse_args, set_args, ReadRSS, news_in_json
-from rss_package import local_storage
+from rss_package import local_storage, log
 from sys import argv
+from rss_package import convert_to_html
+from rss_package.to_pdf import PDF
 
 # urls = [
 #     "https://news.yahoo.com/rss/",
@@ -16,6 +18,7 @@ from sys import argv
 # ]
 
 
+@log.log_decorator
 def news_to_text(news: dict):
     """generates news in a readable form
 
@@ -41,6 +44,7 @@ def news_to_text(news: dict):
     )
 
 
+@log.log_decorator
 def print_readable_text(text, channel_title=None):
     """print news in a format for user"""
     print(f"{channel_title}\n\n" + "\n".join(text))
@@ -51,6 +55,7 @@ def write_news_in_json_file(path, news):
     news_in_json(path, news)
 
 
+@log.log_decorator
 def main():
     """starts the settings and the program
     gets arguments for settings and creates an RSS feed news object
@@ -60,21 +65,44 @@ def main():
 
     if settings["date"]:
         """receive news from the local storage by date and bring it into a readable form"""
+        if settings["verbose"]:
+            log.logger.addHandler(log.log_stream)
         news = local_storage.news_by_date(settings)
         readable_text = [news_to_text(n) for n in news]
-        print_readable_text(readable_text, "\nSaved news:\n")
-        path = "all_news_by_date.json"
+        if settings["verbose"]:
+            pass
+        else:
+            print_readable_text(readable_text, "\nSaved news:\n")
+        json_path = "news_data/all_news_by_date.json"
+        html_path = "rss_news_by_date.html"
+        pdf_path = "news_data/news_by_date.pdf"
     else:
         """receive news from the RSS-feed and bring it into a readable form"""
+        if settings["verbose"]:
+            log.logger.addHandler(log.log_stream)
         read_news = ReadRSS(settings["source"], settings)
         news = read_news.raw_news
         readable_text = [news_to_text(news) for news in read_news.raw_news]
-        print_readable_text(readable_text, read_news.channel_title)
-        path = "all_news.json"
+        if settings["verbose"]:
+            pass
+        else:
+            print_readable_text(readable_text, read_news.channel_title)
+        html_path = "rss_news.html"
+        json_path = "news_data/all_news.json"
+        pdf_path = "news_data/news.pdf"
 
     """write to json file"""
     if settings["json"]:
-        write_news_in_json_file(path, news)
+        write_news_in_json_file(json_path, news)
+
+    """convert to html file"""
+    if settings["to-html"]:
+        convert_to_html(news, settings, html_path)
+
+    """convert to pdf file"""
+    if settings["to-pdf"]:
+        pdf = PDF(news, pdf_path)
+        pdf.create_pdf()
 
 
 if __name__ == "__main__":

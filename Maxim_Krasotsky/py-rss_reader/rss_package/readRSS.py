@@ -31,7 +31,6 @@ class ReadRSS:
             if self.settings["verbose"]:
                 """print the status of the request and additional information via logging"""
                 print(f"\nCode status: {self.r.status_code}\n\n")
-                log.logger.addHandler(log.log_stream)
         except Exception:
             """print an explanatory error message and the error itself"""
             print("Error fetching the URL: ", url)
