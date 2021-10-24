@@ -8,10 +8,11 @@ class PDF(FPDF):
 
     """Class for creating a pdf file and adding news to it"""
 
-    def __init__(self, news, path):
+    def __init__(self, news, path, channel_title):
         super().__init__()
         self.news = news
         self.path = path
+        self.channel_title = channel_title
 
     @log.log_decorator
     def create_pdf(self):
@@ -20,6 +21,7 @@ class PDF(FPDF):
         self.add_font('DejaVu', '', 'DejaVuSansCondensed.ttf', uni=True)
         self.set_font('DejaVu', '', 12)
         self.set_auto_page_break(auto=True, margin=15)
+        self.cell(0, 5, self.channel_title, align="C", border=True, ln=True)
         for item in self.news:
             self.multi_cell(0, 5, f"Title: {item['title']}", border=True)
             self.ln()

@@ -81,6 +81,7 @@ def main():
         if settings["verbose"]:
             log.logger.addHandler(log.log_stream)
         read_news = ReadRSS(settings["source"], settings)
+        feed_title = read_news.channel_title
         news = read_news.raw_news
         readable_text = [news_to_text(news) for news in read_news.raw_news]
         if settings["verbose"]:
@@ -101,7 +102,7 @@ def main():
 
     """convert to pdf file"""
     if settings["to-pdf"]:
-        pdf = PDF(news, pdf_path)
+        pdf = PDF(news, pdf_path, feed_title)
         pdf.create_pdf()
 
 
