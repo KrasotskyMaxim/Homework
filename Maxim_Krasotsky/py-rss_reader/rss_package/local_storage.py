@@ -54,7 +54,7 @@ def news_by_date(settings):
     two_date = ' '.join(date)
 
     """receive news from the storage"""
-    current_news = create_current_news("local_storage.scv")
+    current_news = create_current_news("local_storage.csv")
 
     limit = settings["limit"] if settings["limit"] else -1
 

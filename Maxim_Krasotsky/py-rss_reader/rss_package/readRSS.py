@@ -60,7 +60,7 @@ class ReadRSS:
         self.raw_news = [self._create_news(item) for item in self.items[0:news_count]]
 
         """write news to local storage"""
-        local_storage.write_in_local_storage("local_storage.scv", self.raw_news)
+        local_storage.write_in_local_storage("local_storage.csv", self.raw_news)
 
     def _create_news(self, item):
         """creates news from the received data of the RSS-feed

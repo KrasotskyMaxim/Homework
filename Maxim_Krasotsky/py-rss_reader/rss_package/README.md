@@ -1,0 +1,19 @@
+# Description
+This package contains files with code for working rss reader correctly.
+
+# Content
+- ***local_storage.py*** implementing local storage for caching latest rapsed news
+- ***log.py*** implementing for debuging and verbose mode information
+- ***readRSS.py*** implementing for parsing RSS-feed by link and giving news data from RSS-feed
+- ***rss_argparse.py*** implementing for addition console arguments for my rss reader
+- ***rss_json.py*** - implementing for store news data in the json format
+    - url: ...
+    - title: ...
+    - Link: ...
+    - description: ... 
+    - pubdate: ...
+    - image: ...
+- ***rss_version.py*** implementing for get information about the latest programm version
+- ***to_html.py*** implementing for converting news in the html format
+- ***to_pdf.py*** implementing for converting news in the pdf format
+
