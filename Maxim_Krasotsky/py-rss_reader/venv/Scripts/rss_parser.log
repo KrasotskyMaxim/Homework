@@ -1,0 +1,20 @@
+2021-10-24 09:14:33,722: INFO: Start function  main. args=(), kwargs={}
+2021-10-24 09:14:33,722: INFO: Start function  parse_args. args=([],), kwargs={}
+2021-10-24 09:14:33,723: INFO: Finish function  parse_args. args=([],), kwargs={} return  result Namespace(source=None, version=False, json=False, verbose=False, limit=None, date=None, to_pdf=False, to_html=False)
+2021-10-24 09:14:33,724: INFO: Start function  set_args. args=(Namespace(source=None, version=False, json=False, verbose=False, limit=None, date=None, to_pdf=False, to_html=False),), kwargs={}
+2021-10-24 09:14:33,724: INFO: Finish function  set_args. args=(Namespace(source=None, version=False, json=False, verbose=False, limit=None, date=None, to_pdf=False, to_html=False),), kwargs={} return  result {'version': '4.0', 'limit': None, 'json': False, 'verbose': False, 'date': None, 'to-pdf': False, 'to-html': False, 'source': None}
+2021-10-24 09:14:33,730: INFO: Start function  __init__. args=(<rss_package.readRSS.ReadRSS object at 0x0000019DAFD3F940>, None, {'version': '4.0', 'limit': None, 'json': False, 'verbose': False, 'date': None, 'to-pdf': False, 'to-html': False, 'source': None}), kwargs={}
+2021-10-24 09:14:33,734: ERROR: Exception raised in __init__ args=(<rss_package.readRSS.ReadRSS object at 0x0000019DAFD3F940>, None, {'version': '4.0', 'limit': None, 'json': False, 'verbose': False, 'date': None, 'to-pdf': False, 'to-html': False, 'source': None}), kwargs={}. exception: 'ReadRSS' object has no attribute 'soup'
+Traceback (most recent call last):
+  File "c:\users\maks\pycharmprojects\py-rss_reader\rss_package\log.py", line 24, in wrapper
+    result = func(*args, **kwargs)
+  File "c:\users\maks\pycharmprojects\py-rss_reader\rss_package\readRSS.py", line 51, in __init__
+    self.channel_title = self.soup.find("title").text
+AttributeError: 'ReadRSS' object has no attribute 'soup'
+2021-10-24 09:14:33,735: ERROR: Exception raised in main args=(), kwargs={}. exception: 'ReadRSS' object has no attribute 'channel_title'
+Traceback (most recent call last):
+  File "c:\users\maks\pycharmprojects\py-rss_reader\rss_package\log.py", line 24, in wrapper
+    result = func(*args, **kwargs)
+  File "c:\users\maks\pycharmprojects\py-rss_reader\rss_reader.py", line 84, in main
+    feed_title = read_news.channel_title
+AttributeError: 'ReadRSS' object has no attribute 'channel_title'

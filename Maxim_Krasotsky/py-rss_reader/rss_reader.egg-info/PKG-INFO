@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: rss-reader
+Version: 2.0
+Summary: RSS Parser
+Home-page: UNKNOWN
+Author: Maxim Krasotsky
+Author-email: krasotskiy.maksim@mail.ru
+License: UNKNOWN
+Keywords: python,feed parser
+Platform: UNKNOWN
+
+Python RSS-feeds parser using python 3.9
+
